@@ -5,9 +5,7 @@ import Chirps from "./Chirps";
 class App extends React.Component<IAppProps, IAppState> {
   constructor(props: IAppProps) {
     super(props);
-    // this.state = {
-    //   chirps: []
-    // };
+  
   }
 
   render() {
