@@ -11,7 +11,7 @@ const App : React.FC<IAppProps> = props => {
     <Router>
       <Switch>
         <Route exact path="/" component={ HomePage } />
-        <Route exact path="/details/:chirpid" component={ Details } />
+        <Route exact path="/details/:id" component={ Details } />
         
       </Switch>
     </Router>

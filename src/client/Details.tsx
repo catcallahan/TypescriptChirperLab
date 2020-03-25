@@ -1,11 +1,12 @@
 import * as React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react"
 import { IChirp } from "./utils/types";
 
 const Details : React.FC<DetailsProps> = props => {
     const { id } = useParams()
     const [chirp, setchirp] = useState<IChirp>(null)
+    let history = useHistory()
 
     useEffect(() => {
         (async () => {
@@ -22,6 +23,7 @@ const Details : React.FC<DetailsProps> = props => {
                     <div className="card-body text-center">
                         <h4 className="card-title">{chirp?.author}</h4>
                          <p className="card-text">{chirp?.message}</p>
+                         <button className="btn btn-primary" onClick = {() => history.goBack()}>Back</button>
                     </div>
                 </div>
             </div>
