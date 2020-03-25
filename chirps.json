@@ -1,1 +1,1 @@
-{"1":{"author":"cat","chirp":"new message"},"nextid":2}
+{"1":{"author":"cat","message":"new message"},"2":{"author":"jim","message":"new thing here"},"3":{"author":"jim","message":"new thing here"},"nextid":4}
