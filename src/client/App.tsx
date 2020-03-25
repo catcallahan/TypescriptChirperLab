@@ -2,6 +2,7 @@ import * as React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Chirps from "./Chirps";
 import HomePage from "./HomePage";
+import Details from "./Details";
 
 
 const App : React.FC<IAppProps> = props => {
@@ -10,8 +11,7 @@ const App : React.FC<IAppProps> = props => {
     <Router>
       <Switch>
         <Route exact path="/" component={ HomePage } />
-        <Route exact path="/details/:chirpid" component={ HomePage } />
-        <Route exact path="/chirps" component={ Chirps } />
+        <Route exact path="/details/:chirpid" component={ Details } />
         
       </Switch>
     </Router>

@@ -19,7 +19,7 @@ res.json(chirps)
 router.get("/:chirpid", (req, res) => {
     const chirpid = req.params.chirpid
     const chirp = chirpStore.GetChirp(chirpid)
-    res.json(chirp)
+    res.json({ id: chirpid, ...chirp })
 })
 
 router.post("/", (req, res) => {
@@ -28,15 +28,15 @@ router.post("/", (req, res) => {
     res.sendStatus(200);
 });
 
-router.put("/:id", (req, res) => {
-  let id = req.params.id;
-  chirpStore.UpdateChirp(id, req.body);
+router.put("/:chirpid", (req, res) => {
+  let chirpid = req.params.chirpid;
+  chirpStore.UpdateChirp(chirpid, req.body);
   res.sendStatus(200);
 });
 
-router.delete("/:id", (req, res) => {
-  let id = req.params.id;
-  chirpStore.DeleteChirp(id);
+router.delete("/:chirpid", (req, res) => {
+  let chirpid = req.params.chirpid;
+  chirpStore.DeleteChirp(chirpid);
   res.sendStatus(200);
 });
 
