@@ -1,48 +1,52 @@
 import React, { Fragment } from "react";
 import { RouteComponentProps } from "react-router";
 import chirpstore from "../server/chirpstore";
-import { IChirp }  from "../client/utils/types"
-
+import { IChirp } from "../client/utils/types"
 import Chirps from "./Chirps";
 
 class HomePage extends React.Component<IHomePageProps, IHomePageState> {
-    value : string
-    state : IHomePageState
-    constructor(props: IHomePageProps, value: string) {
-      super(props);
-
-      this.value = value
-      this.state = {
-        chirps: [],
-        newUsername: "",
-        newMessage: ""
-      };
+  value: string
+  state: IHomePageState
+  constructor(props: IHomePageProps, value: string) {
+    super(props);
+    this.value = value
+    this.state = {
+      chirps: [],
+      newUsername: "",
+      newMessage: ""
+    };
   }
-
   componentDidMount() {
-    fetch("/api/chirps")
-      .then(res => res.json())
-      .then(chirps => this.setState({ chirps }));
+   this.fetchChirps()
   }
 
-  async submitChirp (e: React.MouseEvent<HTMLButtonElement>){
+  
+  async submitChirp(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
+    let json = {
+      author: this.state.newUsername,
+      message: this.state.newMessage
+    }
     const rawResponse = await fetch('api/chirps/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(this.state.newUsername, this.state.newMessage);
-      console.log(body);
+      body: JSON.stringify(json)
     });
-    console.log(rawResponse);
-    // const content = await rawResponse.json();
+    this.fetchChirps()
   }
 
-  handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ newUsername: e.target.value });
-  handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ newMessage: e.target.value });
+fetchChirps() {
+    fetch("/api/chirps")
+      .then(res => res.json())
+      .then(chirps => this.setState({ chirps }))
+    
+}
 
+  handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ newUsername: e.target.value });
+  handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => this.setState({ newMessage: e.target.value });
   render() {
     return (
       <Fragment>
@@ -52,35 +56,32 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
             backgroundColor: "#A4D555",
             color: "white"
           }}>
-          <h1 className="text-content-center" style = {{fontSize: "60px"}}>Welcome to Chirpr!</h1>
+          <h1 className="text-content-center" style={{ fontSize: "60px" }}>Welcome to Chirpr!</h1>
         </div>
         <div className=" container-md pt-3">
-        <form className="form-group p-3 shadow border rounded">
-                        <label htmlFor="username" style = {{color: "white"}}>Username:</label>
-                        <input id = "username" type = "text" className="form-control" onChange = {(e) => this.handleUsernameChange(e)} ></input>
-                        <label htmlFor="message"style = {{color: "white"}}>Chirp:</label>
-                        <textarea id = "message" className = "form-control" onChange = {(e) => this.handleMessageChange(e)}></textarea>
-                        <button className="btn btn-primary mt-2" onClick={(e) => this.submitChirp(e)}>Chirp it!</button>
-                </form>
+          <form className="form-group p-3 shadow border rounded">
+            <label htmlFor="username" style={{ color: "white" }}>Username:</label>
+            <input id="username" type="text" className="form-control" onChange={(e) => this.handleUsernameChange(e)} ></input>
+            <label htmlFor="message" style={{ color: "white" }}>Chirp:</label>
+            <textarea id="message" className="form-control" onChange={(e) => this.handleMessageChange(e)}></textarea>
+            <button className="btn btn-primary mt-2" onClick={(e) => this.submitChirp(e)}>Chirp it!</button>
+          </form>
         </div>
         <div className="container d-flex flex-column justify-content-center align-items-center m-auto">
           {this.state.chirps.map(chirp => (
-            <Chirps key = {chirp.id} chirp = {chirp} />
+            <Chirps key={chirp.id} chirp={chirp} />
           ))}
         </div>
       </Fragment>
     );
   }
 }
-
 interface IHomePageProps {
-    chirp : IChirp
+  chirp: IChirp
 }
-
 interface IHomePageState {
   chirps: Array<{ id: string; author: string; message: string }>;
   newUsername: string;
   newMessage: string;
 }
-
 export default HomePage;

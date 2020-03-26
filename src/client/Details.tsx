@@ -7,6 +7,10 @@ const Details : React.FC<DetailsProps> = props => {
     const { id } = useParams()
     const [chirp, setchirp] = useState<IChirp>(null)
     let history = useHistory()
+const [author, setAuthor] = useState<string>();
+const [message, setMessage] = useState<string>();
+const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value);
+const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value);
 
     useEffect(() => {
         (async () => {

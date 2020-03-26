@@ -4,6 +4,15 @@ import { IChirp } from "./utils/types";
 
 const Chirps : React.FC<IChirpsProps> = props => {
     const history = useHistory()
+
+    const deleteChirp = async (e : React.MouseEvent<HTMLButtonElement>) => {
+        let res = await fetch(`api/chirps/${props.chirp.id}`, {
+            method: 'DELETE',
+        });
+     
+    }
+
+
     return (
       <Fragment>
         <div className="container d-flex flex-column justify-content-center align-items-center m-auto">
@@ -13,7 +22,7 @@ const Chirps : React.FC<IChirpsProps> = props => {
                   <h4 className="card-title"> Chirper: {props.chirp.author}</h4>
                   <p className="card-text">{props.chirp.message}</p>
                   <button className="btn btn-primary" onClick = {() => {history.push(`/details/${props.chirp.id}`)}}> Edit </button>
-                  <button className="btn btn-primary ml-2"> Delete </button>
+                  <button className="btn btn-primary ml-2" onClick = {deleteChirp}> Delete </button>
                 </div>
               </div>
             </div>
