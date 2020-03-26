@@ -6,12 +6,17 @@ import { IChirp }  from "../client/utils/types"
 import Chirps from "./Chirps";
 
 class HomePage extends React.Component<IHomePageProps, IHomePageState> {
-  constructor(props: IHomePageProps) {
-    super(props);
+    value : string
+    state : IHomePageState
+    constructor(props: IHomePageProps, value: string) {
+      super(props);
 
-    this.state = {
-      chirps: []
-    };
+      this.value = value
+      this.state = {
+        chirps: [],
+        newUsername: "",
+        newMessage: ""
+      };
   }
 
   componentDidMount() {
@@ -20,34 +25,43 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
       .then(chirps => this.setState({ chirps }));
   }
 
+  async submitChirp (e: React.MouseEvent<HTMLButtonElement>){
+    e.preventDefault();
+    const rawResponse = await fetch('api/chirps/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state.newUsername, this.state.newMessage);
+      console.log(body);
+    });
+    console.log(rawResponse);
+    // const content = await rawResponse.json();
+  }
+
+  handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ newUsername: e.target.value });
+  handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ newMessage: e.target.value });
+
   render() {
     return (
       <Fragment>
         <div
-          className="container-lg d-flex justify-content-center align-items-center shadow-sm p-2 mt-5"
+          className="container-lg d-flex justify-content-center align-items-center shadow-sm p-2 mt-5 rounded"
           style={{
             backgroundColor: "#A4D555",
             color: "white"
           }}>
-          <h1 className="text-content-center">Welcome to Chirpr!</h1>
+          <h1 className="text-content-center" style = {{fontSize: "60px"}}>Welcome to Chirpr!</h1>
         </div>
         <div className=" container-md pt-3">
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="What's Chirpin?"
-              aria-label="Recipient's username"
-              aria-describedby="button-addon2"
-            />
-            <div className="input-group-append">
-              <button
-                className="btn btn-primary"
-                type="button"
-                id="button-addon2"
-              >Chirp!</button>
-            </div>
-          </div>
+        <form className="form-group p-3 shadow border rounded">
+                        <label htmlFor="username" style = {{color: "white"}}>Username:</label>
+                        <input id = "username" type = "text" className="form-control" onChange = {(e) => this.handleUsernameChange(e)} ></input>
+                        <label htmlFor="message"style = {{color: "white"}}>Chirp:</label>
+                        <textarea id = "message" className = "form-control" onChange = {(e) => this.handleMessageChange(e)}></textarea>
+                        <button className="btn btn-primary mt-2" onClick={(e) => this.submitChirp(e)}>Chirp it!</button>
+                </form>
         </div>
         <div className="container d-flex flex-column justify-content-center align-items-center m-auto">
           {this.state.chirps.map(chirp => (
@@ -65,6 +79,8 @@ interface IHomePageProps {
 
 interface IHomePageState {
   chirps: Array<{ id: string; author: string; message: string }>;
+  newUsername: string;
+  newMessage: string;
 }
 
 export default HomePage;

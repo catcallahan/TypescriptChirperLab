@@ -18,14 +18,15 @@ const Details : React.FC<DetailsProps> = props => {
     return (
     <main className="container">
         <section className="row my-2 justify-content-center">
-            <div className="col-md-12">
-                <div className="card shadow">
-                    <div className="card-body text-center">
-                        <h4 className="card-title">{chirp?.author}</h4>
-                         <p className="card-text">{chirp?.message}</p>
-                         <button className="btn btn-primary" onClick = {() => history.goBack()}>Back</button>
-                    </div>
-                </div>
+            <div className="col-md-8">
+                <form className="form-group p-3 shadow border rounded">
+                        <label htmlFor="username" style = {{color: "white"}}>Username:</label>
+                        <input id = "username" type = "text" className="form-control" value = {chirp?.author}></input>
+                        <label htmlFor="message"style = {{color: "white"}}>Chirp:</label>
+                        <textarea id = "message" className = "form-control" value = {chirp?.message}></textarea>
+                        <button className="btn btn-primary mt-2" >Submit Changes</button>
+                        <button className="btn btn-primary mt-2 ml-2" onClick = {() => history.goBack()}>Back</button>
+                </form>
             </div>
         </section>
     </main>
